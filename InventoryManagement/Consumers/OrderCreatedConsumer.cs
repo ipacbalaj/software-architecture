@@ -1,0 +1,29 @@
+namespace InventoryManagement.Consumers;
+using MassTransit;
+
+public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
+{
+    public async Task Consume(ConsumeContext<OrderCreatedEvent> context)
+    {
+        var message = context.Message;
+
+        // Process the OrderCreatedEvent
+        Console.WriteLine($"Order Received: {message.OrderId}");
+        Console.WriteLine($"Customer: {message.CustomerName}");
+        Console.WriteLine($"Total Amount: {message.TotalAmount}");
+        Console.WriteLine($"Status: {message.Status}");
+
+        // Add logic to update inventory or other business rules here
+
+        await Task.CompletedTask; // Simulate async work if needed
+    }
+}
+
+public record OrderCreatedEvent(
+    Guid OrderId,
+    Guid CustomerId,
+    string CustomerName,
+    decimal TotalAmount,
+    DateTime OrderDate,
+    string Status
+);
