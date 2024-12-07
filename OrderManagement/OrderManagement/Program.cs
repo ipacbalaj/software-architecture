@@ -1,6 +1,6 @@
+using Communication.Shared;
 using MassTransit;
 using OrderManagement.Application.Dtos;
-using OrderManagement.Application.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +20,10 @@ builder.Services.AddMassTransit(x =>
             h.Username("guest"); 
             h.Password("guest"); 
         });
-        cfg.Message<OrderCreatedEvent>(x =>
-        {
-            x.SetEntityName("order-created-exchange"); // Custom exchange name
-        });
+        // cfg.Message<OrderCreatedEvent>(x =>
+        // {
+        //     x.SetEntityName("order-created-exchange"); // Custom exchange name
+        // });
     });
 });
 
@@ -37,10 +37,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/orders", async (CreateOrderDTO newOrder, IBus bus) =>
+app.MapPost("/orders", async (CreateOrderDTO newOrder, IPublishEndpoint publishEndpoint) =>
 {
     var orderCreatedEvent = new OrderCreatedEvent(newOrder.OrderId, newOrder.CustomerId, newOrder.CustomerName, newOrder.TotalAmount ,DateTime.UtcNow, newOrder.Status);
-    await bus.Publish(orderCreatedEvent);
+    await publishEndpoint.Publish(orderCreatedEvent);
     return Results.Created($"/orders/{newOrder.OrderId}", newOrder);
 });
 

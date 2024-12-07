@@ -1,3 +1,4 @@
+using Communication.Shared;
 using InventoryManagement.Consumers;
 using MassTransit;
 
@@ -18,16 +19,14 @@ builder.Services.AddMassTransit(x =>
         });
 
         // Configure the receive endpoint for the consumer
-        cfg.ReceiveEndpoint("inventory-service-order-queue", e =>
+        cfg.ReceiveEndpoint("order-created-queue", e =>
         {
-            e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
-            e.Bind<OrderCreatedEvent>();
+            // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
+            // e.Bind<OrderCreatedEvent>();
             e.Consumer<OrderCreatedConsumer>();
         });
 
     });
-    
-    // Add the consumer
 
 });
 var app = builder.Build();

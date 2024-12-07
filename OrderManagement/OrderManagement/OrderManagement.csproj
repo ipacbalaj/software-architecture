@@ -20,4 +20,12 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\Events\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Communication.Shared\Communication.Shared.csproj" />
+    </ItemGroup>
+
 </Project>
