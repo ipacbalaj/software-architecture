@@ -19,13 +19,20 @@ builder.Services.AddMassTransit(x =>
         });
 
         // Configure the receive endpoint for the consumer
-        cfg.ReceiveEndpoint("order-created-queue", e =>
+        cfg.ReceiveEndpoint("order-created-queue-inventory", e =>
         {
             // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
             // e.Bind<OrderCreatedEvent>();
             e.Consumer<OrderCreatedConsumer>();
         });
-
+        
+        cfg.ReceiveEndpoint("inventory-check-queue", e =>
+        {
+            // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
+            // e.Bind<OrderCreatedEvent>();
+            e.Consumer<CheckInventoryConsumer>();
+        });
+        
     });
 
 });
