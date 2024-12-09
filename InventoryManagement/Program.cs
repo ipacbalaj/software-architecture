@@ -12,10 +12,11 @@ builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        var configuration = context.GetRequiredService<IConfiguration>();
+        cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            h.Username(configuration["RabbitMQ:UserName"]);
+            h.Password(configuration["RabbitMQ:Password"]);
         });
 
         // Configure the receive endpoint for the consumer

@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement", "OrderManagement\OrderManagement.csproj", "{C14A650B-C136-40CF-9FCC-4221A4749DAC}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderManagement", "OrderManagement\OrderManagement.csproj", "{C14A650B-C136-40CF-9FCC-4221A4749DAC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9982565B-C0CB-4903-B647-F8DAAFB25837}"
 	ProjectSection(SolutionItems) = preProject
@@ -8,13 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\compose.yaml = ..\compose.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory", "..\Inventory\Inventory.csproj", "{687679BC-6499-40FA-AED6-ED450F592953}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement", "..\InventoryManagement\InventoryManagement.csproj", "{E6DEB85E-731D-4D55-B45E-3339483F6458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagement", "..\InventoryManagement\InventoryManagement.csproj", "{E6DEB85E-731D-4D55-B45E-3339483F6458}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService", "..\PaymentService\PaymentService.csproj", "{3281C69A-31DE-4E0F-902B-1789C877647B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "..\PaymentService\PaymentService.csproj", "{3281C69A-31DE-4E0F-902B-1789C877647B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Communication.Shared", "..\Communication.Shared\Communication.Shared.csproj", "{D40D77A3-E882-4943-ADFE-A5DC66F46CB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Communication.Shared", "..\Communication.Shared\Communication.Shared.csproj", "{D40D77A3-E882-4943-ADFE-A5DC66F46CB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +27,6 @@ Global
 		{C14A650B-C136-40CF-9FCC-4221A4749DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C14A650B-C136-40CF-9FCC-4221A4749DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C14A650B-C136-40CF-9FCC-4221A4749DAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{687679BC-6499-40FA-AED6-ED450F592953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{687679BC-6499-40FA-AED6-ED450F592953}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{687679BC-6499-40FA-AED6-ED450F592953}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{687679BC-6499-40FA-AED6-ED450F592953}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E6DEB85E-731D-4D55-B45E-3339483F6458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E6DEB85E-731D-4D55-B45E-3339483F6458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6DEB85E-731D-4D55-B45E-3339483F6458}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -42,5 +39,11 @@ Global
 		{D40D77A3-E882-4943-ADFE-A5DC66F46CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D40D77A3-E882-4943-ADFE-A5DC66F46CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D40D77A3-E882-4943-ADFE-A5DC66F46CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFB900A1-5227-4E6E-8520-9594A8C9B422}
 	EndGlobalSection
 EndGlobal

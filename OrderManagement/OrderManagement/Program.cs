@@ -25,7 +25,10 @@ builder.Services.AddMassTransit(x =>
 
         r.AddDbContext<DbContext, OrderStateDbContext>((provider, builder) =>
         {
-            builder.UseSqlServer("Server=localhost,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;", m =>
+            var configuration = provider.GetRequiredService<IConfiguration>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            builder.UseSqlServer(connectionString, m =>
             {
                 m.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
                 m.MigrationsHistoryTable($"__{nameof(OrderStateDbContext)}");
@@ -34,15 +37,18 @@ builder.Services.AddMassTransit(x =>
     });
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h => { 
-            h.Username("guest"); 
-            h.Password("guest"); 
+        var configuration = context.GetRequiredService<IConfiguration>();
+        var x = configuration["RabbitMQ:HostName"];
+        cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
+        {
+            h.Username(configuration["RabbitMQ:UserName"]);
+            h.Password(configuration["RabbitMQ:Password"]);
         });
         // cfg.Message<OrderCreatedEvent>(x =>
         // {
         //     x.SetEntityName("order-created-exchange"); // Custom exchange name
         // });
-        
+
         // Configure endpoint for the saga
         cfg.ReceiveEndpoint("order-saga-queue", e =>
         {
@@ -65,7 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.MapPost("/orders", async (CreateOrderDTO newOrder, IPublishEndpoint publishEndpoint) =>
 {

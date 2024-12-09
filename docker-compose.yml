@@ -1,0 +1,77 @@
+version: '3.4'
+
+services:
+  ordermanagement:
+    image: ${DOCKER_REGISTRY-}ordermanagement
+    build:
+      context: .
+      dockerfile: OrderManagement/OrderManagement/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      mssql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  
+  inventorymanagement:
+    image: ${DOCKER_REGISTRY-}inventorymanagement
+    build:
+      context: .
+      dockerfile: /InventoryManagement/Dockerfile
+    ports:
+      - "8082:8080"
+    depends_on:
+      mssql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  paymentservice:
+    image: ${DOCKER_REGISTRY-}paymentservice
+    build:
+      context: .
+      dockerfile: /PaymentService/Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      mssql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # RabbitMQ default port for messaging
+      - "15672:15672" # RabbitMQ Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: always
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    ports:
+      - "1433:1433" # MSSQL default port
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+    restart: always
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P YourStrong@Passw0rd -Q 'SELECT 1' -C"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  mssql-data:
