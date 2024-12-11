@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  dotnetapi:
+    image: dotnetapi
+    container_name: dotnetapi_container
+    ports:
+      - "8080:8080" 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    # volumes:
+      # - "c:/projects/AW/netapicontainerlogs:c:/app/logs"
+    # environment:
+    #   - ASPNETCORE_ENVIRONMENT=Production
+    #   - CUSTOM_ENV=Our_Custom_value
+    restart: always
+    # env_file:
+    #   - .env
+    depends_on:
+       nodeapi:
+         condition: service_healthy
+    networks: 
+      - docker-training-network
+
+  nodeapi:
+    image: nodeapi
+    container_name: nodeapi_container
+    ports:
+      - "3000:3000"  
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks: 
+      - docker-training-network
+
+networks:
+    docker-training-network:
+        external: false
+
+
