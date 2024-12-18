@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagement", "..\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "..\PaymentService\PaymentService.csproj", "{3281C69A-31DE-4E0F-902B-1789C877647B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracing", "..\Tracing\Tracing\Tracing.csproj", "{5CB998D0-0EAE-40B8-9BF6-A9FDF43A0927}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{3281C69A-31DE-4E0F-902B-1789C877647B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3281C69A-31DE-4E0F-902B-1789C877647B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3281C69A-31DE-4E0F-902B-1789C877647B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CB998D0-0EAE-40B8-9BF6-A9FDF43A0927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CB998D0-0EAE-40B8-9BF6-A9FDF43A0927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CB998D0-0EAE-40B8-9BF6-A9FDF43A0927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CB998D0-0EAE-40B8-9BF6-A9FDF43A0927}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
