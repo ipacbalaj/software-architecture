@@ -1,0 +1,55 @@
+# Ignore build and output directories
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code specific files
+.vscode/
+.vscode-test/
+
+# Rider specific files
+.idea/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+!src/**/packages.config
+
+# Yarn/NPM packages
+node_modules/
+
+# .NET-specific files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Mac-specific files
+*.swp
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folders for extensions
+.vscode-test/
+
+# Python virtual environment
+.vscode/.ropeproject/
+
+# Other configuration files
+*.temp
+*.tmp
