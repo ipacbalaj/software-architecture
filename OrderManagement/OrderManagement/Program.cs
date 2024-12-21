@@ -19,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<OrderStateDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 // Add MassTransit
@@ -69,6 +71,7 @@ builder.Services.AddMassTransit(x =>
     
 });
 
+
 builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
 {
     tracerProviderBuilder
@@ -77,6 +80,7 @@ builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
             serviceVersion: "1.0.0"))
         .AddAspNetCoreInstrumentation() // Automatically trace incoming HTTP requests
         .AddHttpClientInstrumentation() // Automatically trace outgoing HTTP requests
+        .AddEntityFrameworkCoreInstrumentation() 
         .AddSource("TracingDemo") // Add custom ActivitySource
         .AddOtlpExporter(options =>
         {
@@ -139,3 +143,5 @@ void MakeCustomVisualizer() {
 
 MakeCustomVisualizer();
 app.Run();
+
+

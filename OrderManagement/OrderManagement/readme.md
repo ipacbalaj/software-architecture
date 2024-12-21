@@ -1,11 +1,20 @@
 ## Databa setup 
 
+
+## Create and run Migrations
+
+### Prerequisites
+
+`dotnet tool install --global dotnet-ef`
+
+### Steps
+
 Cd into /OrderManangement/OrderManagement
 
 
-dotnet ef migrations add InitialCreate --context OrderStateDbContext
+`dotnet ef migrations add InitialCreate --context OrderStateDbContext`
 
-dotnet ef database update --context OrderStateDbContext
+`dotnet ef database update --context OrderStateDbContext`
 
 ## Check container health status 
 

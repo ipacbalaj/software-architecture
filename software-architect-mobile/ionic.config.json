@@ -1,0 +1,7 @@
+{
+  "name": "software-architect-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
