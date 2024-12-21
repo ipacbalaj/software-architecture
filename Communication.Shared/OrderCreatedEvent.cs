@@ -1,4 +1,4 @@
-namespace OrderManagement.Application.Events;
+namespace Communication.Shared;
 
 public record OrderCreatedEvent(
     Guid OrderId,

@@ -1,3 +1,4 @@
+using Communication.Shared;
 using InventoryManagement.Consumers;
 using MassTransit;
 
@@ -11,23 +12,29 @@ builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        var configuration = context.GetRequiredService<IConfiguration>();
+        cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            h.Username(configuration["RabbitMQ:UserName"]);
+            h.Password(configuration["RabbitMQ:Password"]);
         });
 
         // Configure the receive endpoint for the consumer
-        cfg.ReceiveEndpoint("inventory-service-order-queue", e =>
+        cfg.ReceiveEndpoint("order-created-queue-inventory", e =>
         {
-            e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
-            e.Bind<OrderCreatedEvent>();
+            // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
+            // e.Bind<OrderCreatedEvent>();
             e.Consumer<OrderCreatedConsumer>();
         });
-
+        
+        cfg.ReceiveEndpoint("inventory-check-queue", e =>
+        {
+            // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
+            // e.Bind<OrderCreatedEvent>();
+            e.Consumer<CheckInventoryConsumer>();
+        });
+        
     });
-    
-    // Add the consumer
 
 });
 var app = builder.Build();

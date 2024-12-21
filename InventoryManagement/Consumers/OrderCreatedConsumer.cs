@@ -1,3 +1,5 @@
+using Communication.Shared;
+
 namespace InventoryManagement.Consumers;
 using MassTransit;
 
@@ -18,12 +20,3 @@ public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
         await Task.CompletedTask; // Simulate async work if needed
     }
 }
-
-public record OrderCreatedEvent(
-    Guid OrderId,
-    Guid CustomerId,
-    string CustomerName,
-    decimal TotalAmount,
-    DateTime OrderDate,
-    string Status
-);
