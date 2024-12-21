@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -34,15 +35,17 @@ public class OrderCreator
 
         var json = JsonConvert.SerializeObject(createOrderDto);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await client.PostAsync("http://localhost:5064/", content);
-        if (response.IsSuccessStatusCode)
+        using (Activity? startProcActivity = new ActivitySource("TracingDemo").StartActivity("Create Order"))
         {
-            Console.WriteLine("Order created successfully!");
-        }
-        else
-        {
-            Console.WriteLine("Failed to create order. Status Code: " + response.StatusCode);
+            var response = await client.PostAsync("http://localhost:5064/orders", content);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Order created successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Failed to create order. Status Code: " + response.StatusCode);
+            }
         }
     }
 }

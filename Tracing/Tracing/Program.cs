@@ -1,6 +1,9 @@
 ﻿
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Tracing;
@@ -48,10 +51,24 @@ var services = new ServiceCollection();
 services.AddTransient<FileProcessor>();
 services.AddTransient<SlowProcessor>();
 services.AddSingleton<AppBootsTrapper>();
+services.AddTransient<OrderCreator>();
 
 var serviceProvider = services.BuildServiceProvider();
+using var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
+        serviceName: "DemoApp",
+        serviceVersion: "1.0.0"))
+    .AddSource("TracingDemo")
+    .AddHttpClientInstrumentation()
+    .AddConsoleExporter()
+    .AddOtlpExporter(options =>
+    {
+        options.Endpoint = new Uri("http://localhost:4317");
+        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc; 
+    })
+    .Build();
 
 // Get the service and run the application
 var bootstrap = serviceProvider.GetService<AppBootsTrapper>();
-bootstrap.Run();
+await bootstrap.Run();
 Console.WriteLine("Press any key to exit...");
