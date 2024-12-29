@@ -19,8 +19,16 @@ spec:
         ports:
         - containerPort: 8080
         env:
-        - name: DOCKER_REGISTRY
-          value: ""
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=mssql,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+        - name: RabbitMQ__HostName
+          value: "rabbitmq"
+        - name: RabbitMQ__UserName
+          value: "guest"
+        - name: RabbitMQ__Password
+          value: "guest"
 ---
 apiVersion: v1
 kind: Service

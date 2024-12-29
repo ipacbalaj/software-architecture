@@ -62,9 +62,19 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 
 
 ## Kubernetes  Deployments
+Cd into the kubernetes folder.
 
-### Create deployment
+### Create deployment for SQL Server
+
+`kubectl apply -f ./mssql-deployment.yml`
+
+### Create deployment for Rabbit
+`kubectl apply -f ./rabbit-deployment.yml`
+
+### Create deployment for OrderManagement
 `kubectl apply -f ./ordermanagement-deployment.yml`
+
+
 
 ### Remove deployment 
 
@@ -77,3 +87,11 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 ### Check the pods
 
 `kubectl get pods`
+
+### Check logs for a pod
+
+`kubectl logs rabbitmq-df7dd796f-p4fx8`
+
+### Check service configuration
+
+`kubectl describe svc ordermanagement`
