@@ -1,5 +1,6 @@
 ﻿
 using System.Diagnostics;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
@@ -46,7 +47,7 @@ app.Configure(config =>
     config.PropagateExceptions();
     // config.AddCommand<ConvertCommand>("convert");
 });
-
+Environment.SetEnvironmentVariable("OTEL_LOG_LEVEL", "debug");
 var services = new ServiceCollection();
 services.AddTransient<FileProcessor>();
 services.AddTransient<SlowProcessor>();
@@ -65,6 +66,10 @@ using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     {
         options.Endpoint = new Uri("http://localhost:4317");
         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc; 
+    })
+    .AddAzureMonitorTraceExporter(options =>
+    {
+        options.ConnectionString = "InstrumentationKey=2d272067-9206-4be9-965b-f83a92bffe5b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=68cc8b6b-d80b-47d1-9ff8-fb941d0cd3a2";
     })
     .Build();
 

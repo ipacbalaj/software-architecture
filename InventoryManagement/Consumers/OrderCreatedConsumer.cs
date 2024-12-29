@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using Communication.Shared;
 
 namespace InventoryManagement.Consumers;
+
 using MassTransit;
 
 public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
@@ -17,6 +19,6 @@ public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
 
         // Add logic to update inventory or other business rules here
 
-        await Task.CompletedTask; // Simulate async work if needed
+        await Task.CompletedTask; // Simulate async work if needed   
     }
 }

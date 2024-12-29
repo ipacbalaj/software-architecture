@@ -6,6 +6,7 @@ using OrderManagement.Application.Dtos;
 using OrderManagement.Application.Sagas;
 using OrderManagement.Database;
 using System.Reflection;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -13,6 +14,7 @@ using Spectre.Console;
 
 
 var builder = WebApplication.CreateBuilder(args);
+Environment.SetEnvironmentVariable("OTEL_LOG_LEVEL", "debug");
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -86,7 +88,12 @@ builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
         {
             options.Endpoint = new Uri("http://localhost:4317");
             options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+        })
+        .AddAzureMonitorTraceExporter(options =>
+        {
+            options.ConnectionString = "InstrumentationKey=2d272067-9206-4be9-965b-f83a92bffe5b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=68cc8b6b-d80b-47d1-9ff8-fb941d0cd3a2";
         });
+        ;
 });
 
 builder.Services.AddSingleton(new ActivitySource("TracingDemo"));
