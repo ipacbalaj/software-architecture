@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  namespace: default # Change to your namespace if not 'default'
+  annotations:
+    kubernetes.io/ingress.class: "nginx" # Use the appropriate ingress class for your setup
+spec:
+  rules:
+  - host: ecomerce-softwarearchitecure.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ordermanagement 
+            port:
+              number: 80
