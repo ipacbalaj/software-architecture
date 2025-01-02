@@ -1,7 +1,4 @@
-## Databa setup 
-
-
-## Create and run Migrations
+## Database setup 
 
 ### Prerequisites
 
@@ -20,6 +17,14 @@ Cd into /OrderManangement/OrderManagement
 
 docker inspect --format='{{json .State.Health.Status}}' rabbitmq
 docker inspect --format='{{json .State.Health.Status}}' mssql
+
+## Opentelemetry - Jaeger
+
+Make sure jaeger docker container is running - check compose.yml file infrastructure
+
+1. Go to jaeger UI page: http://localhost:16686/
+2. Select the service
+3. Hit find traces. Remark: Find traces again, refresh does not bring the new data
 
 ## Kubernetes 
 

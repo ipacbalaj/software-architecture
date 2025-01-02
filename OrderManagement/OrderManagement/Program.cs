@@ -23,7 +23,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<OrderStateDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 // Add MassTransit
 builder.Services.AddMassTransit(x =>
@@ -99,6 +107,8 @@ builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
 builder.Services.AddSingleton(new ActivitySource("TracingDemo"));
 
 var app = builder.Build();
+
+app.UseCors();
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
 {
