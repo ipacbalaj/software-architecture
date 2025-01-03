@@ -35,7 +35,7 @@ public class OrderCreator
 
         var json = JsonConvert.SerializeObject(createOrderDto);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        using (Activity? startProcActivity = new ActivitySource("TracingDemo").StartActivity("Create Order"))
+        using (Activity? startProcActivity = new ActivitySource("DemoActivitySource").StartActivity("Create Order"))
         {
             var response = await client.PostAsync("http://localhost:5064/orders", content);
             if (response.IsSuccessStatusCode)

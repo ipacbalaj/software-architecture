@@ -7,9 +7,11 @@ using OrderManagement.Application.Sagas;
 using OrderManagement.Database;
 using System.Reflection;
 using Azure.Monitor.OpenTelemetry.Exporter;
+using MassTransit.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using OrderManagement.Samplers;
 using Spectre.Console;
 
 
@@ -91,20 +93,22 @@ builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
         .AddAspNetCoreInstrumentation() // Automatically trace incoming HTTP requests
         .AddHttpClientInstrumentation() // Automatically trace outgoing HTTP requests
         .AddEntityFrameworkCoreInstrumentation() 
-        .AddSource("TracingDemo") // Add custom ActivitySource
+        .AddSource("DemoActivitySource") // Add custom ActivitySource
+        .AddSource(DiagnosticHeaders.DefaultListenerName) // MassTransit ActivitySource
         .AddOtlpExporter(options =>
         {
             options.Endpoint = new Uri("http://localhost:4317");
             options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
         })
-        .AddAzureMonitorTraceExporter(options =>
-        {
-            options.ConnectionString = "InstrumentationKey=2d272067-9206-4be9-965b-f83a92bffe5b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=68cc8b6b-d80b-47d1-9ff8-fb941d0cd3a2";
-        });
+        // .SetSampler(new PercentageSampler()) 
+        // .AddAzureMonitorTraceExporter(options =>
+        // {
+        //     options.ConnectionString = "InstrumentationKey=2d272067-9206-4be9-965b-f83a92bffe5b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=68cc8b6b-d80b-47d1-9ff8-fb941d0cd3a2";
+        // });
         ;
 });
 
-builder.Services.AddSingleton(new ActivitySource("TracingDemo"));
+builder.Services.AddSingleton(new ActivitySource("DemoActivitySource"));
 
 var app = builder.Build();
 
@@ -122,7 +126,7 @@ app.MapPost("/orders", async (CreateOrderDTO newOrder, IPublishEndpoint publishE
 {
     using var activity = activitySource.StartActivity("Create Order");
 
-    activity?.SetTag("example", "tracing");
+    activity?.SetTag("my tag", "tag value");
     var orderCreatedEvent = new OrderCreatedEvent(newOrder.OrderId, newOrder.CustomerId, newOrder.CustomerName, newOrder.TotalAmount ,DateTime.UtcNow, newOrder.Status);
     await publishEndpoint.Publish(orderCreatedEvent);
     return Results.Created($"/orders/{newOrder.OrderId}", newOrder);
@@ -158,7 +162,7 @@ void MakeCustomVisualizer() {
     });
 }
 
-MakeCustomVisualizer();
+// MakeCustomVisualizer();
 app.Run();
 
 

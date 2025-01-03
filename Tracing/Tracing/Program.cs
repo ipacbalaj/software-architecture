@@ -8,6 +8,7 @@ using OpenTelemetry.Trace;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Tracing;
+using Tracing.Commands;
 
 void MakeCustomVisualizer() {
 
@@ -42,6 +43,12 @@ void MakeCustomVisualizer() {
 MakeCustomVisualizer();
 
 var app = new CommandApp();
+
+app.Configure(config =>
+{
+    config.AddCommand<CreateOrderCommand>("createOrder");
+});
+
 app.Configure(config =>
 {
     config.PropagateExceptions();
@@ -57,23 +64,56 @@ services.AddTransient<OrderCreator>();
 var serviceProvider = services.BuildServiceProvider();
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-        serviceName: "DemoApp",
+        serviceName: "TracingConsoleApp",
         serviceVersion: "1.0.0"))
-    .AddSource("TracingDemo")
+    .AddSource("DemoActivitySource")
     .AddHttpClientInstrumentation()
     .AddConsoleExporter()
+    // .SetSampler(new TraceIdRatioBasedSampler(0.1)) // Sample 10% of requests
     .AddOtlpExporter(options =>
     {
         options.Endpoint = new Uri("http://localhost:4317");
         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc; 
     })
-    .AddAzureMonitorTraceExporter(options =>
-    {
-        options.ConnectionString = "InstrumentationKey=2d272067-9206-4be9-965b-f83a92bffe5b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=68cc8b6b-d80b-47d1-9ff8-fb941d0cd3a2";
-    })
+    // .AddAzureMonitorTraceExporter(options =>
+    // {
+    //     options.ConnectionString = "InstrumentationKey=2d272067-9206-4be9-965b-f83a92bffe5b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=68cc8b6b-d80b-47d1-9ff8-fb941d0cd3a2";
+    // })
     .Build();
 
 // Get the service and run the application
-var bootstrap = serviceProvider.GetService<AppBootsTrapper>();
-await bootstrap.Run();
+// var bootstrap = serviceProvider.GetService<AppBootsTrapper>();
+// await bootstrap.Run();
+
+while (true)
+{
+    // Display menu to the user
+    var command = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("[green]Choose a command to execute (or select Exit to quit):[/]")
+            .AddChoices("createOrder", "Exit"));
+
+    if (command.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+    {
+        Console.WriteLine("Exiting application...");
+        break;
+    }
+
+    if (command.Equals("createOrder", StringComparison.OrdinalIgnoreCase))
+    {
+        try
+        {
+            await app.RunAsync(new[] { "createOrder" });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Invalid command. Please try again.");
+    }
+}
+
 Console.WriteLine("Press any key to exit...");
