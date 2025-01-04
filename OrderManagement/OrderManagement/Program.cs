@@ -126,7 +126,7 @@ app.MapPost("/orders", async (CreateOrderDTO newOrder, IPublishEndpoint publishE
 {
     using var activity = activitySource.StartActivity("Create Order");
 
-    activity?.SetTag("my tag", "tag value");
+    activity?.SetTag("backend", "orderCreated");
     var orderCreatedEvent = new OrderCreatedEvent(newOrder.OrderId, newOrder.CustomerId, newOrder.CustomerName, newOrder.TotalAmount ,DateTime.UtcNow, newOrder.Status);
     await publishEndpoint.Publish(orderCreatedEvent);
     return Results.Created($"/orders/{newOrder.OrderId}", newOrder);
@@ -162,7 +162,7 @@ void MakeCustomVisualizer() {
     });
 }
 
-// MakeCustomVisualizer();
+MakeCustomVisualizer();
 app.Run();
 
 

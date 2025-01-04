@@ -47,6 +47,7 @@ var app = new CommandApp();
 app.Configure(config =>
 {
     config.AddCommand<CreateOrderCommand>("createOrder");
+    config.AddCommand<HeavyWorkCommand>("heavywork");
 });
 
 app.Configure(config =>
@@ -91,7 +92,7 @@ while (true)
     var command = AnsiConsole.Prompt(
         new SelectionPrompt<string>()
             .Title("[green]Choose a command to execute (or select Exit to quit):[/]")
-            .AddChoices("createOrder", "Exit"));
+            .AddChoices("createOrder","heavywork", "Exit"));
 
     if (command.Equals("Exit", StringComparison.OrdinalIgnoreCase))
     {
@@ -112,6 +113,17 @@ while (true)
     }
     else
     {
+        if (command.Equals("heavywork", StringComparison.OrdinalIgnoreCase))
+        {
+            try
+            {
+                await app.RunAsync(new[] { "heavywork" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
         Console.WriteLine("Invalid command. Please try again.");
     }
 }
