@@ -22,6 +22,8 @@ Environment.SetEnvironmentVariable("OTEL_LOG_LEVEL", "debug");
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
+
 
 builder.Services.AddDbContext<OrderStateDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -130,6 +132,29 @@ app.MapPost("/orders", async (CreateOrderDTO newOrder, IPublishEndpoint publishE
     var orderCreatedEvent = new OrderCreatedEvent(newOrder.OrderId, newOrder.CustomerId, newOrder.CustomerName, newOrder.TotalAmount ,DateTime.UtcNow, newOrder.Status);
     await publishEndpoint.Publish(orderCreatedEvent);
     return Results.Created($"/orders/{newOrder.OrderId}", newOrder);
+});
+
+app.MapGet("/inventory", async (HttpClient httpClient) =>
+{
+    string inventoryServiceUrl = $"http://inventorymanagement/inventory";
+
+    try
+    {
+        var response = await httpClient.GetAsync(inventoryServiceUrl);
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadAsStringAsync();
+            return Results.Ok(result);
+        }
+        else
+        {
+            return Results.Problem($"Error calling inventory service: {response.StatusCode}");
+        }
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Exception calling inventory service: {ex.Message}");
+    }
 });
 
 void MakeCustomVisualizer() {

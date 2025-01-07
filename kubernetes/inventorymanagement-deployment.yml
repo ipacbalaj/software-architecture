@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ordermanagement
+  name: inventorymanagement
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ordermanagement
+      app: inventorymanagement
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -15,11 +15,11 @@ spec:
   template:
     metadata:
       labels:
-        app: ordermanagement
+        app: inventorymanagement
     spec:
       containers:
-      - name: ordermanagement
-        image: ordermanagement
+      - name: inventorymanagement
+        image: inventorymanagement
         imagePullPolicy: Never
         ports:
         - containerPort: 8080
@@ -38,13 +38,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ordermanagement
+  name: inventorymanagement
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8080
-    nodePort: 30001 # You can specify a port in the range 30000-32767
   selector:
-    app: ordermanagement
+    app: inventorymanagement

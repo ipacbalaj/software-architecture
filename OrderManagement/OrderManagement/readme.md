@@ -28,18 +28,23 @@ Make sure jaeger docker container is running - check compose.yml file infrastruc
 
 ## Kubernetes 
 
-See all contexts 
-`kubectl config get-contexts`
 
-Switch to corect context
-`kubectl config set-context docker-desktop`
+### Install Kubernetes
 
-`kubectl config use-context docker-desktop`
+1. Make sure docker desktop is installed
+2. Enable Kubernetes in docker desktop
+![alt text](image-1.png)
+3. Check if instalation ran succesfully
+ -  run  `kubectl`
+ -  check details `kubectl version --client=true -o yaml`
+4. Check the cluster
+- `kubectl get nodes`
 
-### Install Helm
-
-
+5. Check kubectl config
+- `kubectl config view`
 ### Setup Kubernetes dashboard locally
+
+
 
 https://github.com/kubernetes/dashboard
 
@@ -66,6 +71,15 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/a
 http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 
 
+See all contexts 
+`kubectl config get-contexts`
+
+Switch to corect context
+`kubectl config set-context docker-desktop`
+
+`kubectl config use-context docker-desktop`
+
+
 ## Kubernetes  Deployments
 Cd into the kubernetes folder.
 
@@ -77,11 +91,25 @@ Cd into the kubernetes folder.
 `kubectl apply -f ./rabbit-deployment.yml`
 
 ### Create deployment for OrderManagement
+
+- If the changes not seen in the new image make sure cache is disabled when building the image: `docker-compose build ordermanagement --no-cache`
+
 `kubectl apply -f ./ordermanagement-deployment.yml`
 
 #### Check the ordermanagement swagger
 
 http://localhost:30000/swagger/index.html
+
+
+### Create deployment for Inventorymanagement
+Make sure the inventoryManagement image is build
+CD into the root folder where the docker.compose.yml is
+- Run : `docker-compose build inventorymanagement`
+
+- Cd into the kubernetes folder
+- `kubectl apply -f .\inventorymanagement-deployment.yml`
+- 
+
 
 ### Remove deployment 
 
@@ -124,3 +152,9 @@ Install the comunity ingress controller:
 You can find it under ingresses in thee dashboard.
 The nodeport can be removed form the ordermanagement. The ingress access it internally
 `kubectl get ingress`
+
+
+## Docker
+
+### Build a single image from a compose file 
+`docker-compose build ordermanagement`

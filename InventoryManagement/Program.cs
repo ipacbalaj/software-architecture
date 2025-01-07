@@ -68,13 +68,18 @@ builder.Services.AddMassTransit(x =>
 });
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.MapGet("/inventory", async () =>
+{
+    return new { Inventory = 67, ProductName = "Pijamas" };
+});
+
+//app.UseHttpsRedirection();
 
 void MakeCustomVisualizer() {
 
