@@ -96,6 +96,10 @@ Cd into the kubernetes folder.
 
 `kubectl apply -f ./ordermanagement-deployment.yml`
 
+### Endpoint slices
+
+`kubectl get endpointslices`
+
 #### Check the ordermanagement swagger
 
 http://localhost:30000/swagger/index.html
@@ -137,6 +141,15 @@ Install the comunity ingress controller:
 
 `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.5/deploy/static/provider/cloud/deploy.yaml`
 
+Check the status of the controller pod
+
+`kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx`
+
+Check ingress classes
+
+`kubectl get ingressclass`
+`kubectl describe ingressclass nginx`
+
 ### Provide a host 
 
 #### Windows:
@@ -147,12 +160,14 @@ Install the comunity ingress controller:
 ![Alt text](image.png)
 
 ### Run the pod
-` kubectl apply -f ingress.yml`
+`kubectl apply -f ingress.yml`
 
 You can find it under ingresses in thee dashboard.
 The nodeport can be removed form the ordermanagement. The ingress access it internally
 `kubectl get ingress`
 
+### Remove the ingress
+`kubectl delete -f  .\ingress.yml`
 
 ## Docker
 

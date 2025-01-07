@@ -3,9 +3,8 @@ kind: Ingress
 metadata:
   name: ecommerce-ingress
   namespace: default # Change to your namespace if not 'default'
-  annotations:
-    kubernetes.io/ingress.class: "nginx" # Use the appropriate ingress class for your setup
 spec:
+  ingressClassName: nginx
   rules:
   - host: ecomerce-softwarearchitecure.ro
     http:
@@ -14,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: ordermanagement 
+            name: inventorymanagement 
             port:
               number: 80
