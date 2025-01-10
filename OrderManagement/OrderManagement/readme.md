@@ -173,3 +173,24 @@ The nodeport can be removed form the ordermanagement. The ingress access it inte
 
 ### Build a single image from a compose file 
 `docker-compose build ordermanagement`
+
+#### Build a single image with a specified tag 
+
+Change in docker compose: 
+``` yaml
+ordermanagement:
+    image: ${DOCKER_REGISTRY-}ordermanagement:v1.1
+```
+
+## Rolling Updates
+Apply the deployment again
+
+Check the status of the deploymnet
+`kubectl rollout status deployment ordermanagement`
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordermanagement
+  ``` 

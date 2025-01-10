@@ -3,10 +3,11 @@ kind: Deployment
 metadata:
   name: ordermanagement
 spec:
-  replicas: 3
+  replicas: 10
   selector:
     matchLabels:
       app: ordermanagement
+  minReadySeconds: 10 # rate at which kubernetes replaces replicas. Wait 15 seconds between each replica
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -19,7 +20,7 @@ spec:
     spec:
       containers:
       - name: ordermanagement
-        image: ordermanagement
+        image: ordermanagement:v1.1
         imagePullPolicy: Never
         ports:
         - containerPort: 8080

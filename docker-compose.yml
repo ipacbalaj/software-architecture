@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   ordermanagement:
-    image: ${DOCKER_REGISTRY-}ordermanagement
+    image: ${DOCKER_REGISTRY-}ordermanagement:v1.1
     build:
       context: .
       dockerfile: OrderManagement/OrderManagement/Dockerfile
