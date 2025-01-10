@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ordermanagement
+  name: ordermanagement-deploy
 spec:
   replicas: 10
   selector:
@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: ordermanagement
-        image: ordermanagement:v1.1
+        image: ordermanagement
         imagePullPolicy: Never
         ports:
         - containerPort: 8080

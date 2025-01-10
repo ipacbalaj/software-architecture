@@ -186,7 +186,7 @@ ordermanagement:
 Apply the deployment again
 
 Check the status of the deploymnet
-`kubectl rollout status deployment ordermanagement`
+`kubectl rollout status deployment ordermanagement-deploy`
 
 ```yaml
 apiVersion: apps/v1
@@ -194,3 +194,33 @@ kind: Deployment
 metadata:
   name: ordermanagement
   ``` 
+
+### Stop/Resume a rolout
+
+`kubectl rollout pause deploy ordermanagement-deploy`
+
+Check the state of the deployment 
+
+`kubectl describe deploy ordermanagement-deploy`
+
+Resume the rollout
+
+`kubectl rollout resume deploy ordermanagement-deploy`
+
+## Rollbacks
+
+Check revisions 
+
+`kubectl rollout history deployment ordermanagement-deploy`
+
+Check replica sets associated with each revision
+
+`kubectl get rs`
+
+Check details about a replica set
+
+`kubectl describe rs ordermanagement-deploy-64df5bd96b`
+
+Rollback to a specific revision
+
+`kubectl rollout undo deployment ordermanagement-deploy --to-revision=1`
