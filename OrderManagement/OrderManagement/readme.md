@@ -224,3 +224,19 @@ Check details about a replica set
 Rollback to a specific revision
 
 `kubectl rollout undo deployment ordermanagement-deploy --to-revision=1`
+
+
+## Service Discovery
+
+### Service registries
+
+Check the dns pods
+`kubectl get pods -n kube-system -l k8s-app=kube-dns`
+
+Check the deployment 
+
+`kubectl get deploy -n kube-system -l k8s-app=kube-dns`
+
+Check the service
+
+`kubectl get svc -n kube-system -l k8s-app=kube-dns`
