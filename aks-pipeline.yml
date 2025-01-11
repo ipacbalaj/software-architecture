@@ -4,6 +4,9 @@
 
 trigger:
 - main
+paths:
+  include:
+  - OrderManagement/**
 
 resources:
 - repo: self
@@ -12,7 +15,7 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '59d7c55a-fc1d-4fec-95cb-46e76fbf7d3c'
-  imageRepository: 'ordermanagementrepository'
+  imageRepository: 'ordermanagement'
   containerRegistry: 'crsoftwarearchitecturetest.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/OrderManagementDockerfile'
   tag: '$(Build.BuildId)'
@@ -70,8 +73,8 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Pipeline.Workspace)/OrderManagement/manifests/deployment.yml
+                $(Pipeline.Workspace)/OrderManagement/manifests/service.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |

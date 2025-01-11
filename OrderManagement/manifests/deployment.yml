@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: ordermanagement 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordermanagement
+  template:
+    metadata:
+      labels:
+        app: ordermanagement 
+    spec:
+      containers:
+        - name: ordermanagement 
+          image: crsoftwarearchitecturetest.azurecr.io/ordermanagement
+          ports:
+          - containerPort: 8080
