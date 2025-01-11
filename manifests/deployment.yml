@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: ipacbalajsoftwarearchitecture 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipacbalajsoftwarearchitecture
+  template:
+    metadata:
+      labels:
+        app: ipacbalajsoftwarearchitecture 
+    spec:
+      containers:
+        - name: ipacbalajsoftwarearchitecture 
+          image: crsoftwarearchitecturetest.azurecr.io/ipacbalajsoftwarearchitecture
+          ports:
+          - containerPort: 8080
