@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: '59d7c55a-fc1d-4fec-95cb-46e76fbf7d3c'
   imageRepository: 'ordermanagementrepository'
   containerRegistry: 'crsoftwarearchitecturetest.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/OrderManagementDockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'crsoftwarearchitecturetest201011e7-auth'
 
