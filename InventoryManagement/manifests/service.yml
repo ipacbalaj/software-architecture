@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: inventorymanagement
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 8080 
+    selector:
+        app: inventorymanagement

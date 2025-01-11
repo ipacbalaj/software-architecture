@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: inventorymanagement 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventorymanagement
+  template:
+    metadata:
+      labels:
+        app: inventorymanagement 
+    spec:
+      containers:
+        - name: inventorymanagement 
+          image: crsoftwarearchitecturetest.azurecr.io/inventorymanagement
+          ports:
+          - containerPort: 8080

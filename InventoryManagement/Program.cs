@@ -39,31 +39,38 @@ builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
 
 builder.Services.AddMassTransit(x =>
 {
-    x.UsingRabbitMq((context, cfg) =>
+    try
     {
-        var configuration = context.GetRequiredService<IConfiguration>();
-        cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
+        x.UsingRabbitMq((context, cfg) =>
         {
-            h.Username(configuration["RabbitMQ:UserName"]);
-            h.Password(configuration["RabbitMQ:Password"]);
-        });
+            var configuration = context.GetRequiredService<IConfiguration>();
+            cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
+            {
+                h.Username(configuration["RabbitMQ:UserName"]);
+                h.Password(configuration["RabbitMQ:Password"]);
+            });
 
-        // Configure the receive endpoint for the consumer
-        cfg.ReceiveEndpoint("order-created-queue-inventory", e =>
-        {
-            // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
-            // e.Bind<OrderCreatedEvent>();
-            e.Consumer<OrderCreatedConsumer>();
+            // Configure the receive endpoint for the consumer
+            cfg.ReceiveEndpoint("order-created-queue-inventory", e =>
+            {
+                // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
+                // e.Bind<OrderCreatedEvent>();
+                e.Consumer<OrderCreatedConsumer>();
+            });
+
+            cfg.ReceiveEndpoint("inventory-check-queue", e =>
+            {
+                // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
+                // e.Bind<OrderCreatedEvent>();
+                e.Consumer<CheckInventoryConsumer>();
+            });
+
         });
-        
-        cfg.ReceiveEndpoint("inventory-check-queue", e =>
-        {
-            // e.Bind("order-created-exchange"); // Explicitly bind to the custom exchange
-            // e.Bind<OrderCreatedEvent>();
-            e.Consumer<CheckInventoryConsumer>();
-        });
-        
-    });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Warning] Database configuration failed: {ex.Message}");
+    }
 
 });
 var app = builder.Build();
