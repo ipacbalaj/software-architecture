@@ -1,19 +1,19 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: ipacbalajsoftwarearchitecture 
+  name: ordermanagementrepository 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ipacbalajsoftwarearchitecture
+      app: ordermanagementrepository
   template:
     metadata:
       labels:
-        app: ipacbalajsoftwarearchitecture 
+        app: ordermanagementrepository 
     spec:
       containers:
-        - name: ipacbalajsoftwarearchitecture 
-          image: crsoftwarearchitecturetest.azurecr.io/ipacbalajsoftwarearchitecture
+        - name: ordermanagementrepository 
+          image: crsoftwarearchitecturetest.azurecr.io/ordermanagementrepository
           ports:
           - containerPort: 8080
