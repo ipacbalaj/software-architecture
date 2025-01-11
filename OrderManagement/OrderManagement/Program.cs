@@ -110,6 +110,7 @@ builder.Services.AddOpenTelemetry().WithTracing(tracerProviderBuilder =>
         .AddSource(DiagnosticHeaders.DefaultListenerName) // MassTransit ActivitySource
         .AddOtlpExporter(options =>
         {
+            // todo: host jaeger in cluster
             options.Endpoint = new Uri("http://localhost:4317");
             options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
         })

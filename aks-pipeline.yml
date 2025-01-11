@@ -3,10 +3,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
-paths:
-  include:
-  - OrderManagement/**
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - OrderManagement/**
 
 resources:
 - repo: self
