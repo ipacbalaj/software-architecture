@@ -41,11 +41,10 @@ kind: Service
 metadata:
   name: ordermanagement
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8080
-    nodePort: 30001 # You can specify a port in the range 30000-32767
   selector:
     app: ordermanagement

@@ -102,7 +102,7 @@ Cd into the kubernetes folder.
 
 #### Check the ordermanagement swagger
 
-http://localhost:30000/swagger/index.html
+http://localhost:30001/swagger/index.html
 
 
 ### Create deployment for Inventorymanagement
