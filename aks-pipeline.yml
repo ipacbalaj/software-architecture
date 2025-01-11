@@ -46,8 +46,8 @@ stages:
         tags: |
           $(tag)
 
-    - upload: manifests
-      artifact: manifests
+    - upload: OrderManagement/manifests
+      artifact: OrderManagement/manifests
 
 - stage: Deploy
   displayName: Deploy stage
