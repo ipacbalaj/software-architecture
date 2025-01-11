@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  ordermanagement:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+      - RabbitMQ__HostName=rabbitmq
+      - RabbitMQ__UserName=guest
+      - RabbitMQ__Password=guest
+    ports:
+      - "8080"
+
+  inventorymanagement:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+      - RabbitMQ__HostName=rabbitmq
+      - RabbitMQ__UserName=guest
+      - RabbitMQ__Password=guest
+    ports:
+      - "8080"
+
+  # paymentservice:
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_HTTP_PORTS=8080
+  #     - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+  #     - RabbitMQ__HostName=rabbitmq
+  #     - RabbitMQ__UserName=guest
+  #     - RabbitMQ__Password=guest
+  #   ports:
+  #     - "8080"

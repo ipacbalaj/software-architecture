@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventorymanagement
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: inventorymanagement
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: inventorymanagement
+    spec:
+      containers:
+      - name: inventorymanagement
+        image: inventorymanagement
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=mssql,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+        - name: RabbitMQ__HostName
+          value: "rabbitmq"
+        - name: RabbitMQ__UserName
+          value: "guest"
+        - name: RabbitMQ__Password
+          value: "guest"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventorymanagement
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: inventorymanagement

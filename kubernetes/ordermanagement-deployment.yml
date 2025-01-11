@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordermanagement-deploy
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: ordermanagement
+  minReadySeconds: 10 # rate at which kubernetes replaces replicas. Wait 15 seconds between each replica
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: ordermanagement
+    spec:
+      containers:
+      - name: ordermanagement
+        image: ordermanagement
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=mssql,1433;Database=ecomerce;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+        - name: RabbitMQ__HostName
+          value: "rabbitmq"
+        - name: RabbitMQ__UserName
+          value: "guest"
+        - name: RabbitMQ__Password
+          value: "guest"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordermanagement
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: ordermanagement

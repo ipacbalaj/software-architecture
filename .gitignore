@@ -1,0 +1,58 @@
+# Build Folders / Files
+bin/
+obj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# DotNet Publish folders
+out/
+artifacts/
+
+# Logs
+*.log
+*.tlog
+*.vscode-test
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# Rider IDE files
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.pdb
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Generated files
+wwwroot/
+
+# Runtime-generated files
+*.vs/
+*.db
+
+# Configuration
+appsettings.*.json
+
+# NPM
+package-lock.json
+
+# JetBrains Rider
+.idea/
+
+# Mac/Linux file system files
+*.DS_Store
