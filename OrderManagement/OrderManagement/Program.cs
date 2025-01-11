@@ -24,65 +24,76 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
-
-builder.Services.AddDbContext<OrderStateDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddCors(options =>
+try
 {
-    options.AddDefaultPolicy(policy =>
+    builder.Services.AddDbContext<OrderStateDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddCors(options =>
     {
-        policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
     });
-});
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[Warning] Database configuration failed: {ex.Message}");
+}
 
 // Add MassTransit
 builder.Services.AddMassTransit(x =>
 {
-    x.AddSagaStateMachine<OrderSaga, OrderSagaState>() //.InMemoryRepository();
-    .EntityFrameworkRepository(r =>
+    try
     {
-        r.ConcurrencyMode = ConcurrencyMode.Pessimistic; // or use Optimistic, which requires RowVersion
+        x.AddSagaStateMachine<OrderSaga, OrderSagaState>() //.InMemoryRepository();
+  .EntityFrameworkRepository(r =>
+  {
+      r.ConcurrencyMode = ConcurrencyMode.Pessimistic; // or use Optimistic, which requires RowVersion
 
-        r.AddDbContext<DbContext, OrderStateDbContext>((provider, builder) =>
+      r.AddDbContext<DbContext, OrderStateDbContext>((provider, builder) =>
+      {
+          var configuration = provider.GetRequiredService<IConfiguration>();
+          var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+          builder.UseSqlServer(connectionString, m =>
+          {
+              m.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+              m.MigrationsHistoryTable($"__{nameof(OrderStateDbContext)}");
+          });
+      });
+  });
+        x.UsingRabbitMq((context, cfg) =>
         {
-            var configuration = provider.GetRequiredService<IConfiguration>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            builder.UseSqlServer(connectionString, m =>
+            var configuration = context.GetRequiredService<IConfiguration>();
+            var x = configuration["RabbitMQ:HostName"];
+            cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
             {
-                m.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-                m.MigrationsHistoryTable($"__{nameof(OrderStateDbContext)}");
+                h.Username(configuration["RabbitMQ:UserName"]);
+                h.Password(configuration["RabbitMQ:Password"]);
             });
+            // cfg.Message<OrderCreatedEvent>(x =>
+            // {
+            //     x.SetEntityName("order-created-exchange"); // Custom exchange name
+            // });
+
+            // Configure endpoint for the saga
+            cfg.ReceiveEndpoint("order-saga-queue", e =>
+            {
+                e.StateMachineSaga<OrderSagaState>(context); // Attach the saga
+            });
+
+            // Automatically configure endpoints for all registered consumers/sagas
+            cfg.ConfigureEndpoints(context);
+
         });
-    });
-    x.UsingRabbitMq((context, cfg) =>
+    }
+    catch (Exception ex)
     {
-        var configuration = context.GetRequiredService<IConfiguration>();
-        var x = configuration["RabbitMQ:HostName"];
-        cfg.Host(configuration["RabbitMQ:HostName"], "/", h =>
-        {
-            h.Username(configuration["RabbitMQ:UserName"]);
-            h.Password(configuration["RabbitMQ:Password"]);
-        });
-        // cfg.Message<OrderCreatedEvent>(x =>
-        // {
-        //     x.SetEntityName("order-created-exchange"); // Custom exchange name
-        // });
-
-        // Configure endpoint for the saga
-        cfg.ReceiveEndpoint("order-saga-queue", e =>
-        {
-            e.StateMachineSaga<OrderSagaState>(context); // Attach the saga
-        });
-
-        // Automatically configure endpoints for all registered consumers/sagas
-        cfg.ConfigureEndpoints(context);
-        
-    });
-
-    
+        Console.WriteLine($"[Warning] RabbitMQ configuration failed: {ex.Message}");
+    }    
 });
 
 
