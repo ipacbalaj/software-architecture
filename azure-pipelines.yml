@@ -9,7 +9,7 @@ variables:
   dockerRegistryServiceConnection: 'e114b910-81f9-47c2-94d7-4f98466bbedf'
   imageRepository: 'ordermanagementrepository'
   containerRegistry: 'crsoftwarearchitecturetest.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/OrderManagement/OrderManagement/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
