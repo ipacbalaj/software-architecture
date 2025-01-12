@@ -13,7 +13,7 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-- stage: Deploy Rabbit
+- stage: DeployRabbit
   displayName: Deploy Rabbit Stage 
   jobs:
   - deployment: Deploy
@@ -33,7 +33,7 @@ stages:
               manifests: |
                 $(System.DefaultWorkingDirectory)/kubernetes-aks/rabbit-aks-deployment.yml
 
-- stage: Deploy mssql
+- stage: Deploymssql
   displayName: Deploy mssql Stage 
   jobs:
   - deployment: Deploy
