@@ -25,6 +25,7 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self  # Explicitly checkout the repository. In case of deployments the checkout does not automaticall happen
           - task: KubernetesManifest@0
             displayName: Deploy RabbitMQ to Kubernetes
             inputs:
