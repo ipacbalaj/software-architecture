@@ -32,4 +32,3 @@ stages:
               action: deploy
               manifests: |
                 $(System.DefaultWorkingDirectory)/kubernetes-aks/rabbit-aks-deployment.yml
-              namespace: $(kubernetesNamespace)
