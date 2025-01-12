@@ -13,8 +13,8 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-- stage: Deploy
-  displayName: Deploy Stage
+- stage: Deploy Rabbit
+  displayName: Deploy Rabbit Stage 
   jobs:
   - deployment: Deploy
     displayName: Deploy RabbitMQ to Kubernetes
@@ -32,3 +32,23 @@ stages:
               action: deploy
               manifests: |
                 $(System.DefaultWorkingDirectory)/kubernetes-aks/rabbit-aks-deployment.yml
+
+- stage: Deploy mssql
+  displayName: Deploy mssql Stage 
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy mssql to Kubernetes
+    environment: 'ipacbalajsoftwarearchitecture.default'
+    pool:
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self  # Explicitly checkout the repository. In case of deployments the checkout does not automaticall happen
+          - task: KubernetesManifest@0
+            displayName: Deploy mssql to Kubernetes
+            inputs:
+              action: deploy
+              manifests: |
+                $(System.DefaultWorkingDirectory)/kubernetes-aks/mssql-aks-deployment.yml                
