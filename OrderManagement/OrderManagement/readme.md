@@ -240,3 +240,30 @@ Check the deployment
 Check the service
 
 `kubectl get svc -n kube-system -l k8s-app=kube-dns`
+
+## Connect to AKS cluster
+
+`az login`
+
+`az account set --subscription 6c3b16a9-e832-4b25-aeaa-b50ed4756392`
+
+The following command will merge your cluster credentials into the lcoal kube config
+`az aks get-credentials --resource-group rg-softwarearchitecture-test-westeu --name aks-softwarearchitecture-test-westeu`
+
+Check the pods
+
+`kubectl get pods`
+
+Make sure this is the current context 
+
+`kubectl config get-contexts`
+
+`kubectl config set-context aks-softwarearchitecture-test-westeu`
+
+### Deploy an ingress controller
+
+`kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.5/deploy/static/provider/cloud/deploy.yaml`
+
+Check the ingress pods. The controller should be in running state
+
+`kubectl get pods -n ingress-nginx`

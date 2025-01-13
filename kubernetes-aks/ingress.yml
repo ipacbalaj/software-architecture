@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  namespace: default # Change to your namespace if not 'default'
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: skillab-software-architecture-ingress.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name:  inventorymanagement 
+            port:
+              number: 80
+  # - host: ecomerce-softwarearchitecure.order.ro
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: ordermanagement 
+  #           port:
+  #             number: 80              
