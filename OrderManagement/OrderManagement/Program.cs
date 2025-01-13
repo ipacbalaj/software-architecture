@@ -160,7 +160,7 @@ app.MapGet("/inventory", async (HttpClient httpClient) =>
         }
         else
         {
-            return Results.Problem($"Error calling inventory service: {response.StatusCode}");
+            return Results.Problem($"Error calling inventory service - Demo purpose: {response.StatusCode}");
         }
     }
     catch (Exception ex)
