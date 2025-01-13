@@ -1,5 +1,10 @@
-# trigger:
-# - main
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - OrderManagement/**
 
 resources:
 - repo: self
@@ -9,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: 'e114b910-81f9-47c2-94d7-4f98466bbedf'
   imageRepository: 'ordermanagementrepository'
   containerRegistry: 'crsoftwarearchitecturetest.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/OrderManagementDockerfile'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
