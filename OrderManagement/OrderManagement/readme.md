@@ -260,6 +260,10 @@ Make sure this is the current context
 
 `kubectl config set-context aks-softwarearchitecture-test-westeu`
 
+Switch to the desired context 
+
+`kubectl config use-context docker-desktop`
+
 ### Deploy an ingress controller
 
 `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.5/deploy/static/provider/cloud/deploy.yaml`
