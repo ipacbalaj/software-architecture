@@ -165,7 +165,7 @@ app.MapGet("/inventory", async (HttpClient httpClient) =>
     }
     catch (Exception ex)
     {
-        return Results.Problem($"Exception calling inventory service: {ex.Message}");
+        return Results.Problem($"Exception calling inventory service : {ex.Message}");
     }
 });
 
